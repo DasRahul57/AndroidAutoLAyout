@@ -1,3 +1,8 @@
+import java.io.FileInputStream
+import java.io.InputStreamReader
+import java.util.*
+import kotlin.math.sign
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -34,6 +39,8 @@ android {
 
 }
 
+val versionName = "2.1.0"
+
 
 
 dependencies {
@@ -45,12 +52,58 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 }
 
-publishing {
-    publications {
-        register<MavenPublication>("release") {
-            afterEvaluate {
-                from(components["release"])
+
+afterEvaluate {
+
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components.findByName("release"))
+                groupId = "io.github.TroxyRahul"
+                artifactId = "AndroidAutoLayout"
+                version = versionName
+
+                pom {
+                    name.value("AndroidAutoLayout")
+                    description.value("Powerful and flexible RecyclerAdapter")
+                    url.value("https://github.com/TroxyRahul/AndroidAutoLayout")
+
+                    licenses {
+                        license {
+                            //协议类型
+                            name.value("The MIT License")
+                            url.value("https://github.com/TroxyRahul/AndroidAutoLayout/blob/master/LICENSE")
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id.value("TroxyRahul")
+                            name.value("Troxy")
+                            email.value("gamingparsha@gmail.com")
+                        }
+                    }
+
+                    scm {
+                        connection.value("scm:git@github.com/CymChad/TroxyRahul/AndroidAutoLayout.git")
+                        developerConnection.value("scm:git@github.com/TroxyRahul/AndroidAutoLayout.git")
+                        url.value("https://github.com/TroxyRahul/AndroidAutoLayout")
+                    }
+                }
+            }
+
+        }
+
+        repositories {
+            maven {
+                url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+//                credentials {
+//                    username = ossrhUsername
+//                    password = ossrhPassword
+//                }
             }
         }
+
     }
+
 }
